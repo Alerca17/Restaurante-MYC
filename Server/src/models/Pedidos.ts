@@ -9,8 +9,8 @@ import {
   BelongsTo,
   HasMany,
 } from "sequelize-typescript";
-import { Usuarios } from "./usuarios";
-import { Mesas } from "./Mesa";
+import { Usuarios } from "./Usuarios";
+import { Mesas } from "./Mesas";
 import { PedidoPlato } from "./PedidoPlato";
 
 @Table({
@@ -25,24 +25,24 @@ export class Pedidos extends Model<Pedidos> {
 
   @ForeignKey(() => Usuarios)
   @Column(DataType.INTEGER)
-  clienteId!: number;
+  declare clienteId: number;
 
   @ForeignKey(() => Mesas)
   @Column(DataType.INTEGER)
-  mesaId?: number;
+  declare mesaId?: number;
 
   @Column(DataType.DATE)
-  fecha!: Date;
+  declare fecha: Date;
 
   @Column(DataType.DECIMAL(10, 2))
-  total!: number;
+  declare total: number;
 
   @BelongsTo(() => Usuarios)
-  cliente!: Usuarios;
+  declare cliente: Usuarios;
 
   @BelongsTo(() => Mesas)
-  mesa!: Mesas;
+  declare mesa: Mesas;
 
   @HasMany(() => PedidoPlato)
-  pedidoPlatos!: PedidoPlato[];
+  declare pedidoPlatos: PedidoPlato[];
 }

@@ -22,24 +22,24 @@ export class Usuarios extends Model<Usuarios> {
   declare id: number;
 
   @Column(DataType.STRING)
-  nombre!: string;
+  declare nombre: string;
 
   @Unique
   @Column(DataType.STRING)
-  correo!: string;
+  declare correo: string;
 
   @Column(DataType.STRING)
-  contrasena!: string;
+  declare contrasena: string;
 
   @Column(DataType.STRING)
-  telefono?: string;
+  declare telefono?: string;
 
   @Column(DataType.ENUM("cliente", "admin", "mesero"))
-  rol!: "cliente" | "admin" | "mesero";
+  declare rol: "cliente" | "admin" | "mesero";
 
   @HasMany(() => Reservas)
-  reservas!: Reservas[];
+  declare reservas: Reservas[];
 
   @HasMany(() => Pedidos)
-  pedidos!: Pedidos[];
+  declare pedidos: Pedidos[];
 }

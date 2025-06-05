@@ -23,27 +23,27 @@ export class Platos extends Model<Platos> {
   declare id: number;
 
   @Column(DataType.STRING)
-  nombre!: string;
+  declare nombre: string;
 
   @ForeignKey(() => Categorias)
   @Column(DataType.INTEGER)
-  categoriaId!: number;
+  declare categoriaId: number;
 
   @Column(DataType.DECIMAL(10, 2))
-  precio!: number;
+  declare precio: number;
 
   @Column(DataType.BOOLEAN)
-  disponible!: boolean;
+  declare disponible: boolean;
 
   @Column(DataType.TEXT)
-  descripcion?: string;
+  declare descripcion?: string;
 
   @Column(DataType.STRING)
-  imagenUrl?: string;
+  declare imagenUrl?: string;
 
   @BelongsTo(() => Categorias)
-  categoria!: Categorias;
+  declare categoria: Categorias;
 
   @HasMany(() => PedidoPlato)
-  pedidoPlatos!: PedidoPlato[];
+  declare pedidoPlatos: PedidoPlato[];
 }

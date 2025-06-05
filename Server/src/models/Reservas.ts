@@ -8,8 +8,8 @@ import {
   ForeignKey,
   BelongsTo,
 } from "sequelize-typescript";
-import { Usuarios } from "./usuarios";
-import { Mesas } from "./Mesa";
+import { Usuarios } from "./Usuarios";
+import { Mesas } from "./Mesas";
 
 @Table({
   tableName: "reservas",
@@ -23,24 +23,24 @@ export class Reservas extends Model<Reservas> {
 
   @ForeignKey(() => Usuarios)
   @Column(DataType.INTEGER)
-  clienteId!: number;
+  declare clienteId: number;
 
   @ForeignKey(() => Mesas)
   @Column(DataType.INTEGER)
-  mesaId!: number;
+  declare mesaId: number;
 
   @Column(DataType.DATE)
-  fecha!: Date;
+  declare fecha: Date;
 
   @Column(DataType.TIME)
-  hora!: string;
+  declare hora: string;
 
   @Column(DataType.INTEGER)
-  personas!: number;
+  declare personas: number;
 
   @BelongsTo(() => Usuarios)
-  cliente!: Usuarios;
+  declare cliente: Usuarios;
 
   @BelongsTo(() => Mesas)
-  mesa!: Mesas;
+  declare mesa: Mesas;
 }

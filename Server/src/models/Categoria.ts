@@ -20,8 +20,8 @@ export class Categorias extends Model<Categorias> {
   declare id: number;
 
   @Column(DataType.STRING)
-  nombre!: string;
+  declare nombre: string;
 
   @HasMany(() => Platos)
-  platos!: Platos[];
+  declare platos: Platos[];
 }

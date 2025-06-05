@@ -23,24 +23,24 @@ export class PedidoPlato extends Model<PedidoPlato> {
 
   @ForeignKey(() => Pedidos)
   @Column(DataType.INTEGER)
-  pedidoId!: number;
+  declare pedidoId: number;
 
   @ForeignKey(() => Platos)
   @Column(DataType.INTEGER)
-  platoId!: number;
+  declare platoId: number;
 
   @Column(DataType.INTEGER)
-  cantidad!: number;
+  declare cantidad: number;
 
   @Column(DataType.DECIMAL(10, 2))
-  precioUnitario!: number;
+  declare precioUnitario: number;
 
   @Column(DataType.TEXT)
-  observaciones?: string;
+  declare observaciones?: string;
 
   @BelongsTo(() => Pedidos)
-  pedido!: Pedidos;
+  declare pedido: Pedidos;
 
   @BelongsTo(() => Platos)
-  plato!: Platos;
+  declare plato: Platos;
 }

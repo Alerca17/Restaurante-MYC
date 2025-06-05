@@ -23,14 +23,14 @@ export class Mesas extends Model<Mesas> {
 
   @Unique
   @Column(DataType.INTEGER)
-  numero!: number;
+  declare numero: number;
 
   @Column(DataType.INTEGER)
-  capacidad!: number;
+  declare capacidad: number;
 
   @HasMany(() => Reservas)
-  reservas!: Reservas[];
+  declare reservas: Reservas[];
 
   @HasMany(() => Pedidos)
-  pedidos!: Pedidos[];
+  declare pedidos: Pedidos[];
 }
