@@ -38,7 +38,7 @@ export class Platos extends Model<Platos> {
   @Column(DataType.TEXT)
   declare descripcion?: string;
 
-  @Column(DataType.STRING)
+  @Column({ type: DataType.STRING, field: "imagen_url" })
   declare imagenUrl?: string;
 
   @BelongsTo(() => Categorias)

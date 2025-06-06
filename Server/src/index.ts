@@ -1,28 +1,3 @@
-// import app from "./server";
-// import colors from "colors";
-// import { db } from "./config/db";
-
-// const port = process.env.PORT || 4000;
-
-// async function startServer() {
-//   try {
-//     await db.authenticate();
-//     await db.sync({ alter: true });
-//     console.log(colors.green.bold("✅ Conexión a la base de datos exitosa"));
-
-//     // ⬇️ Este bloque mantiene vivo el servidor
-//     app.listen(port, () => {
-//       console.log(
-//         colors.cyan.bold(`🚀 REST API corriendo en el puerto ${port}`)
-//       );
-//     });
-//   } catch (error) {
-//     console.error(colors.red.bold("❌ Error al conectar con la base de datos"));
-//     console.error(error);
-//   }
-// }
-
-// startServer(); // ⬅️ No olvides ejecutar esta función
 import app from "./server";
 import colors from "colors";
 import { db } from "./config/db";
@@ -103,9 +78,7 @@ process.on("SIGTERM", () => {
 });
 
 process.on("SIGINT", () => {
-  console.log(
-    colors.yellow("🛑 Recibida señal SIGINT, ccderrando servidor...")
-  );
+  console.log(colors.yellow("🛑 Recibida señal SIGINT, cerrando servidor..."));
   db.close();
   process.exit(0);
 });

@@ -7,11 +7,12 @@ export const handleInputErrors = (
   res: Response,
   next: NextFunction
 ) => {
-  let errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+  const errores = validationResult(req);
+  if (!errores.isEmpty()) {
+    res.status(400).json({ errores: errores.array() });
+    return;
   }
-  next();
+  next(); // solo se llama si no hay errores
 };
 
 export const validarUsuario = [
@@ -41,16 +42,13 @@ export const validarMesa = [
 
 export const validarPlato = [
   body("nombre").notEmpty().withMessage("El nombre es obligatorio"),
-  body("categoria_id").isInt().withMessage("ID de categoría inválido"),
+  body("categoriaId").isInt().withMessage("ID de categoría inválido"),
   body("precio").isFloat({ gt: 0 }).withMessage("El precio debe ser mayor a 0"),
   body("disponible")
     .optional()
     .isBoolean()
     .withMessage("El campo disponible debe ser booleano"),
-  body("imagen_url")
-    .optional()
-    .isURL()
-    .withMessage("La URL de imagen no es válida"),
+  body("imagenUrl").optional().trim().isURL().withMessage("URL inválida"),
 ];
 
 export const validarReserva = [
@@ -77,4 +75,12 @@ export const validarPedidoPlato = [
   body("precio_unitario")
     .isFloat({ gt: 0 })
     .withMessage("Precio debe ser mayor a 0"),
+];
+
+export const validarCategoria = [
+  body("nombre")
+    .notEmpty()
+    .withMessage("El nombre de la categoría es obligatorio")
+    .isLength({ max: 50 })
+    .withMessage("El nombre no puede tener más de 50 caracteres"),
 ];

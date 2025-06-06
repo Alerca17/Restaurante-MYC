@@ -1,15 +1,14 @@
 import { Router } from "express";
 import { usuariosControllers } from "../controllers/usuariosController";
 import { body } from "express-validator";
-import { validarUsuario } from "../middleware/validaciones";
-import { validarCampos } from "../middleware/validarCampos";
+import { validarUsuario, handleInputErrors } from "../middleware/validaciones";
 
 const router = Router();
 
 router.post(
   "/",
   validarUsuario, // ⬅️ Reglas de validación (express-validator)
-  validarCampos, // ⬅️ Revisa errores y corta si hay fallos
+  handleInputErrors, // ⬅️ Revisa errores y corta si hay fallos
   usuariosControllers.create // ⬅️ Ejecuta el controlador si todo está bien
 );
 
@@ -23,7 +22,7 @@ router.get("/:id", usuariosControllers.getById);
 router.put(
   "/:id",
   validarUsuario, // Puedes crear otra validación específica para actualización
-  validarCampos,
+  handleInputErrors,
   usuariosControllers.updateById
 );
 
