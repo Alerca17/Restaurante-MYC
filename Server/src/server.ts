@@ -5,7 +5,7 @@ import categoriasRouter from "./routes/categoriasRouter";
 import platosRouter from "./routes/platosRouter";
 import reservasRouter from "./routes/reservasRouter";
 import mesasRouter from "./routes/mesasRouter";
-import pedidosRouter from "./routes/platosRouter";
+import pedidosRouter from "./routes/pedidosRouter";
 import pedidoPlatoRouter from "./routes/pedidoPlatoRouter";
 const app = express();
 
