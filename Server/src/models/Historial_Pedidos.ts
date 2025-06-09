@@ -1,11 +1,16 @@
-import mongoose, { Schema } from "mongoose"
+import mongoose, { Schema, Document } from "mongoose"
 
-export interface IHistorialPedidos {
+export interface IObservacion {
+
+    platoId: number;
+    comentario: string;
+}
+export interface IHistorialPedidos extends Document {
 
     pedido_id: number,
     cliente_id: number,
     fecha: Date,
-    platos: number[],
+    observaciones: IObservacion[],
     total: number
 }
 
@@ -14,21 +19,24 @@ const historialPedidosSchema = new Schema({
     pedido_id: {
         type: Number,
         require: true,
-        unique: true
     },
     cliente_id: {
         type: Number, //Tipo de dato
         require: true, //Obligatorio
-        unique: true
     },
     fecha: {
         type: Date,
         require: true
     },
-    platos: {
-        type: [Number],
-        default: []
-    },
+    observaciones: [{
+        platoId: {
+            type: Number,
+            required: true
+        },
+        comentario: {
+            type: String
+        },
+    }],
     total: {
         type: Number,
         require: true,
