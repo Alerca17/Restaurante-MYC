@@ -1,0 +1,22 @@
+# node_modules: donde se instalan las dependencias (no se sube)
+node_modules/
+
+# dist: donde TypeScript compila tu código (no se sube)
+dist/
+
+# archivos de entorno
+.env
+.env.*
+
+# logs y archivos temporales
+*.log
+*.tmp
+*.cache
+
+# editores
+.vscode/
+.idea/
+
+# sistema operativo
+.DS_Store
+Thumbs.db
