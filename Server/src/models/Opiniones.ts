@@ -4,9 +4,9 @@ export interface IOpinion {
 
     cliente_id: number,
     calificacion: number,
-    comentario: string,
-    tipo_visita: string;
-    fecha: Date,
+    comentario?: string,
+    tipo_visita?: string,
+    fecha?: Date,
     platos: number[]
 }
 
@@ -15,7 +15,6 @@ const opinionSchema = new Schema({
     cliente_id: {
         type: Number, //Tipo de dato
         require: true, //Obligatorio
-        unique: true
     },
     calificacion: {
         type: Number,
@@ -25,16 +24,14 @@ const opinionSchema = new Schema({
     },
     comentario: {
         type: String,
-        require: true
     },
     tipo_visita: {
         type: String,
         enum: ["Familiar", "Negocios", "Pareja", "Amigos", "Otro"],
-        required: true,
     },
     fecha: {
         type: Date,
-        require: true
+        default: Date.now
     },
     platos: {
         type: [Number],

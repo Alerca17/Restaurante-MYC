@@ -9,9 +9,7 @@ import pedidosRouter from "./routes/platosRouter";
 import pedidoPlatoRouter from "./routes/pedidoPlatoRouter";
 import { connectDB } from "./config/dbmg";
 import 'dotenv/config'
-import router from "./routes/router";
-
-
+import historialPedidosRouter from "./routes/historialPedidosRouter"
 
 //Conexion a Render
 const app = express();
@@ -21,8 +19,11 @@ app.use(express.json());
 
 //Conexion a Mongo
 connectDB();
-app.use('/api', router)
 
+//Rutas a Mongo
+app.use('/api/historial', historialPedidosRouter)
+
+//Rutas Postgresql
 app.use("/api/usuarios", usuariosRouter);
 app.use("/api/categorias", categoriasRouter);
 app.use("/api/platos", platosRouter);

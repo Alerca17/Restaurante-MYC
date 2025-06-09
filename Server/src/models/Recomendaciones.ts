@@ -3,7 +3,8 @@ import mongoose, { Schema } from "mongoose"
 export interface IRecomendacion {
 
     cliente_id: number,
-    fecha_generada: Date,
+    fecha: Date,
+    motivos: string;
     recomendaciones: string[]
 }
 
@@ -13,10 +14,13 @@ const RecomendacionSchema = new Schema<IRecomendacion>({
         type: Number,
         required: true
     },
-    fecha_generada: {
+    fecha: {
         type: Date,
         required: true,
         default: Date.now
+    },
+    motivos: {
+        type: String
     },
     recomendaciones: {
         type: [String],
