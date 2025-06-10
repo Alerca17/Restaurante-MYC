@@ -52,8 +52,8 @@ export const validarPlato = [
 ];
 
 export const validarReserva = [
-  body("cliente_id").isInt().withMessage("ID de cliente inválido"),
-  body("mesa_id").isInt().withMessage("ID de mesa inválido"),
+  body("clienteId").isInt().withMessage("ID de cliente inválido"),
+  body("mesaId").isInt().withMessage("ID de mesa inválido"),
   body("fecha").isISO8601().withMessage("Fecha inválida"),
   body("hora")
     .matches(/^([0-1]\d|2[0-3]):([0-5]\d)$/)
@@ -64,15 +64,34 @@ export const validarReserva = [
 ];
 
 export const validarPedido = [
-  body("cliente_id").isInt().withMessage("ID de cliente inválido"),
-  body("mesa_id").optional().isInt().withMessage("ID de mesa inválido"),
+  body("clienteId").isInt({ min: 1 }).withMessage("ID de cliente inválido"),
+
+  body("mesaId")
+    .optional()
+    .isInt({ min: 1 })
+    .withMessage("ID de mesa inválido"),
+
+  body("platos")
+    .isArray({ min: 1 })
+    .withMessage("Debes incluir al menos un plato en el pedido"),
+
+  body("platos.*.platoId")
+    .isInt({ min: 1 })
+    .withMessage("ID de plato inválido en la lista de platos"),
+
+  body("platos.*.cantidad")
+    .isInt({ min: 1 })
+    .withMessage("Cantidad mínima por plato es 1"),
 ];
 
 export const validarPedidoPlato = [
-  body("pedido_id").isInt().withMessage("ID de pedido inválido"),
-  body("plato_id").isInt().withMessage("ID de plato inválido"),
+  body("pedidoId").isInt({ min: 1 }).withMessage("ID de pedido inválido"),
+
+  body("platoId").isInt({ min: 1 }).withMessage("ID de plato inválido"),
+
   body("cantidad").isInt({ min: 1 }).withMessage("Cantidad mínima es 1"),
-  body("precio_unitario")
+
+  body("precioUnitario")
     .isFloat({ gt: 0 })
     .withMessage("Precio debe ser mayor a 0"),
 ];
