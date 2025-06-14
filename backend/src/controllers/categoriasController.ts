@@ -7,9 +7,11 @@ export class categoriasController {
     try {
       const categorias = await Categorias.findAll();
       res.json(categorias);
+      return;
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Error al obtener categorías" });
+      return;
     }
   }
 
@@ -18,11 +20,13 @@ export class categoriasController {
       const categoria = await Categorias.findByPk(req.params.id);
       if (!categoria) {
         res.status(404).json({ error: "Categoría no encontrada" });
+        return;
       }
       res.json(categoria);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Error al obtener la categoría" });
+      return;
     }
   }
 
@@ -32,9 +36,11 @@ export class categoriasController {
       res
         .status(201)
         .json({ mensaje: "Categoría creada", data: nuevaCategoria });
+      return;
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Error al crear la categoría" });
+      return;
     }
   }
 
@@ -43,12 +49,15 @@ export class categoriasController {
       const categoria = await Categorias.findByPk(req.params.id);
       if (!categoria) {
         res.status(404).json({ error: "Categoría no encontrada" });
+        return;
       }
       await categoria.update(req.body);
       res.json({ mensaje: "Categoría actualizada", data: categoria });
+      return;
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Error al actualizar la categoría" });
+      return;
     }
   }
 
@@ -57,12 +66,15 @@ export class categoriasController {
       const categoria = await Categorias.findByPk(req.params.id);
       if (!categoria) {
         res.status(404).json({ error: "Categoría no encontrada" });
+        return;
       }
       await categoria.destroy();
       res.json({ mensaje: "Categoría eliminada" });
+      return;
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Error al eliminar la categoría" });
+      return;
     }
   }
 }
