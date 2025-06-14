@@ -13,9 +13,15 @@ import historialPedidosRouter from "./routes/historialPedidosRouter"
 import opinionesRouter from "./routes/opinionesRouter"
 import preferenciasRouter from "./routes/preferenciasRouter"
 import recomendacionesRouter from "./routes/recomendacionesRouter"
+import authRoutes from "./routes/authRouter"
+import cors from "cors"
+import { corsConfig } from "./config/cors";
 
 //Conexion a Render
 const app = express()
+
+//Configuración de CORS
+app.use(cors(corsConfig))
 
 app.use(morgan("dev"))
 app.use(express.json())
@@ -38,5 +44,7 @@ app.use("/api/mesas", mesasRouter)
 app.use("/api/pedidos", pedidosRouter)
 app.use("/api/pedidosPlatos", pedidoPlatoRouter)
 
+//Autenticación
+app.use("/api/auth", authRoutes)
 
 export default app
