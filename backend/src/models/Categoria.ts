@@ -1,19 +1,17 @@
 import {
   Table,
-  Column,
   Model,
+  Column,
   DataType,
   PrimaryKey,
   AutoIncrement,
-  HasMany,
+  BelongsToMany,
 } from "sequelize-typescript";
 import { Platos } from "./Platos";
+import { PlatoCategoria } from "./PlatoCategorias";
 
-@Table({
-  tableName: "categorias",
-  timestamps: false,
-})
-export class Categorias extends Model<Categorias> {
+@Table({ tableName: "categorias", timestamps: false })
+export class Categoria extends Model<Categoria> {
   @PrimaryKey
   @AutoIncrement
   @Column(DataType.INTEGER)
@@ -22,6 +20,6 @@ export class Categorias extends Model<Categorias> {
   @Column(DataType.STRING)
   declare nombre: string;
 
-  @HasMany(() => Platos)
-  declare platos: Platos[];
+  @BelongsToMany(() => Platos, () => PlatoCategoria)
+  platos: Platos[];
 }

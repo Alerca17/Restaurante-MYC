@@ -1,36 +1,45 @@
 import { Request, Response } from "express";
 import { Platos } from "../models/Platos";
-import { Categorias } from "../models/Categoria";
+import { Categoria } from "../models/Categoria";
+
 export class PlatosController {
   static create = async (req: Request, res: Response) => {
     try {
-      const plato = await Platos.create(req.body);
+      const { categorias, ...platoData } = req.body; // categorias: array de IDs
+      const plato = await Platos.create(platoData);
+
+      if (categorias && categorias.length > 0) {
+        await plato.$set("categorias", categorias);
+      }
+
       res.status(201).json({ mensaje: "Plato creado", data: plato });
-      return;
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Error al crear el plato" });
-      return;
     }
   };
 
   static getAll = async (req: Request, res: Response) => {
     try {
       const platos = await Platos.findAll({
-        include: [{ model: Categorias, attributes: ["id", "nombre"] }],
+        include: [
+          { model: Categoria, as: "categorias", attributes: ["id", "nombre"] },
+        ],
       });
       res.json(platos);
-      return;
     } catch (error) {
-      console.error("Error al obtener platos:", error); // 👈 esto es clave
+      console.error("Error al obtener platos:", error);
       res.status(500).json({ error: "Error al obtener los platos" });
-      return;
     }
   };
 
   static getById = async (req: Request, res: Response) => {
     try {
-      const plato = await Platos.findByPk(req.params.id);
+      const plato = await Platos.findByPk(req.params.id, {
+        include: [
+          { model: Categoria, as: "categorias", attributes: ["id", "nombre"] },
+        ],
+      });
       if (!plato) {
         res.status(404).json({ error: "Plato no encontrado" });
         return;
@@ -39,25 +48,35 @@ export class PlatosController {
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Error al obtener el plato" });
-      return;
     }
   };
 
   static updateById = async (req: Request, res: Response) => {
     try {
+      const { categorias, ...platoData } = req.body;
       const plato = await Platos.findByPk(req.params.id);
       if (!plato) {
         res.status(404).json({ error: "Plato no encontrado" });
         return;
       }
 
-      await plato.update(req.body);
-      res.json({ mensaje: "Plato actualizado", data: plato });
-      return;
+      await plato.update(platoData);
+
+      if (Array.isArray(categorias)) {
+        await plato.$set("categorias", categorias);
+      }
+
+      // Traer el plato actualizado con sus categorías
+      const platoActualizado = await Platos.findByPk(req.params.id, {
+        include: [
+          { model: Categoria, as: "categorias", attributes: ["id", "nombre"] },
+        ],
+      });
+
+      res.json({ mensaje: "Plato actualizado", data: platoActualizado });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Error al actualizar el plato" });
-      return;
     }
   };
 
@@ -71,11 +90,9 @@ export class PlatosController {
 
       await plato.destroy();
       res.json({ mensaje: "Plato eliminado" });
-      return;
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Error al eliminar el plato" });
-      return;
     }
   };
 }

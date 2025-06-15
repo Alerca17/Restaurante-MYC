@@ -6,13 +6,23 @@ import { Pedidos } from "../models/Pedidos";
 import { Platos } from "../models/Platos";
 import { Mesas } from "../models/Mesas";
 import { PedidoPlato } from "../models/PedidoPlato";
-import { Categorias } from "../models/Categoria";
+import { Categoria } from "../models/Categoria";
+import { PlatoCategoria } from "../models/PlatoCategorias";
 
 dotenv.config();
 
 export const db = new Sequelize(process.env.DATABASE_URL as string, {
   dialect: "postgres",
-  models: [Usuarios, Reservas, Pedidos, Platos, Mesas, PedidoPlato, Categorias],
+  models: [
+    Usuarios,
+    Reservas,
+    Pedidos,
+    Platos,
+    Mesas,
+    PedidoPlato,
+    Categoria,
+    PlatoCategoria,
+  ],
   logging: false,
   dialectOptions: {
     ssl: {

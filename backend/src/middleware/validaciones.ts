@@ -42,7 +42,12 @@ export const validarMesa = [
 
 export const validarPlato = [
   body("nombre").notEmpty().withMessage("El nombre es obligatorio"),
-  body("categoriaId").isInt().withMessage("ID de categoría inválido"),
+  body("categorias")
+    .isArray({ min: 1 })
+    .withMessage("Debes asignar al menos una categoría"),
+  body("categorias.*")
+    .isInt({ min: 1 })
+    .withMessage("Cada categoría debe ser un ID válido"),
   body("precio").isFloat({ gt: 0 }).withMessage("El precio debe ser mayor a 0"),
   body("disponible")
     .optional()
@@ -64,36 +69,41 @@ export const validarReserva = [
 ];
 
 export const validarPedido = [
+  // Validar clienteId (requerido, entero positivo)
   body("clienteId").isInt({ min: 1 }).withMessage("ID de cliente inválido"),
 
+  // Validar mesaId (opcional, entero positivo)
   body("mesaId")
     .optional()
     .isInt({ min: 1 })
     .withMessage("ID de mesa inválido"),
 
+  // Validar fecha (requerida, formato ISO)
+  body("fecha")
+    .notEmpty()
+    .withMessage("La fecha es obligatoria")
+    .isISO8601()
+    .withMessage("La fecha debe tener formato válido"),
+
+  // Validar que platos sea un array con al menos un elemento
   body("platos")
     .isArray({ min: 1 })
     .withMessage("Debes incluir al menos un plato en el pedido"),
 
+  // Validar cada plato del array
   body("platos.*.platoId")
     .isInt({ min: 1 })
-    .withMessage("ID de plato inválido en la lista de platos"),
+    .withMessage("ID de plato inválido"),
 
   body("platos.*.cantidad")
     .isInt({ min: 1 })
     .withMessage("Cantidad mínima por plato es 1"),
-];
 
-export const validarPedidoPlato = [
-  body("pedidoId").isInt({ min: 1 }).withMessage("ID de pedido inválido"),
-
-  body("platoId").isInt({ min: 1 }).withMessage("ID de plato inválido"),
-
-  body("cantidad").isInt({ min: 1 }).withMessage("Cantidad mínima es 1"),
-
-  body("precioUnitario")
-    .isFloat({ gt: 0 })
-    .withMessage("Precio debe ser mayor a 0"),
+  // Validar observaciones (opcional, string)
+  body("platos.*.observaciones")
+    .optional()
+    .isString()
+    .withMessage("Las observaciones deben ser texto"),
 ];
 
 export const validarCategoria = [

@@ -4,15 +4,51 @@ import { Usuarios } from "../models/Usuarios";
 import { Mesas } from "../models/Mesas";
 
 export class ReservasController {
-  static create = async (req: Request, res: Response) => {
+  static async create(req: Request, res: Response) {
     try {
-      const reserva = await Reservas.create(req.body);
+      const { clienteId, mesaId, fecha, hora, personas } = req.body;
+
+      // 1. Validar existencia de cliente
+      const cliente = await Usuarios.findByPk(clienteId);
+      if (!cliente) {
+        return res.status(400).json({ error: "El cliente no existe" });
+      }
+
+      // 2. Validar existencia de mesa
+      const mesa = await Mesas.findByPk(mesaId);
+      if (!mesa) {
+        return res.status(400).json({ error: "La mesa no existe" });
+      }
+
+      // 3. Validar disponibilidad de la mesa (misma fecha y hora)
+      const reservaExistente = await Reservas.findOne({
+        where: {
+          mesaId,
+          fecha,
+          hora,
+        },
+      });
+      if (reservaExistente) {
+        return res
+          .status(400)
+          .json({ error: "La mesa ya está reservada para esa fecha y hora" });
+      }
+
+      // 4. Crear la reserva si todo está bien
+      const reserva = await Reservas.create({
+        clienteId,
+        mesaId,
+        fecha,
+        hora,
+        personas,
+      });
       res.status(201).json({ mensaje: "Reserva creada", data: reserva });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Error al crear reserva" });
+      res
+        .status(500)
+        .json({ error: "Error al crear la reserva", detalle: error.message });
     }
-  };
+  }
 
   static getAll = async (_req: Request, res: Response) => {
     try {

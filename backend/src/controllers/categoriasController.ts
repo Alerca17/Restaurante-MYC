@@ -1,11 +1,11 @@
 // src/controllers/categoriasController.ts
 import { Request, Response } from "express";
-import { Categorias } from "../models/Categoria";
+import { Categoria } from "../models/Categoria";
 
 export class categoriasController {
   static async getAll(req: Request, res: Response) {
     try {
-      const categorias = await Categorias.findAll();
+      const categorias = await Categoria.findAll();
       res.json(categorias);
       return;
     } catch (error) {
@@ -17,7 +17,7 @@ export class categoriasController {
 
   static async getById(req: Request, res: Response) {
     try {
-      const categoria = await Categorias.findByPk(req.params.id);
+      const categoria = await Categoria.findByPk(req.params.id);
       if (!categoria) {
         res.status(404).json({ error: "Categoría no encontrada" });
         return;
@@ -32,7 +32,7 @@ export class categoriasController {
 
   static async create(req: Request, res: Response) {
     try {
-      const nuevaCategoria = await Categorias.create(req.body);
+      const nuevaCategoria = await Categoria.create(req.body);
       res
         .status(201)
         .json({ mensaje: "Categoría creada", data: nuevaCategoria });
@@ -46,7 +46,7 @@ export class categoriasController {
 
   static async updateById(req: Request, res: Response) {
     try {
-      const categoria = await Categorias.findByPk(req.params.id);
+      const categoria = await Categoria.findByPk(req.params.id);
       if (!categoria) {
         res.status(404).json({ error: "Categoría no encontrada" });
         return;
@@ -63,7 +63,7 @@ export class categoriasController {
 
   static async deleteById(req: Request, res: Response) {
     try {
-      const categoria = await Categorias.findByPk(req.params.id);
+      const categoria = await Categoria.findByPk(req.params.id);
       if (!categoria) {
         res.status(404).json({ error: "Categoría no encontrada" });
         return;

@@ -6,11 +6,12 @@ import {
   PrimaryKey,
   AutoIncrement,
   ForeignKey,
-  BelongsTo,
+  BelongsToMany,
   HasMany,
 } from "sequelize-typescript";
-import { Categorias } from "./Categoria";
+import { Categoria } from "./Categoria";
 import { PedidoPlato } from "./PedidoPlato";
+import { PlatoCategoria } from "./PlatoCategorias";
 
 @Table({
   tableName: "platos",
@@ -25,10 +26,6 @@ export class Platos extends Model<Platos> {
   @Column(DataType.STRING)
   declare nombre: string;
 
-  @ForeignKey(() => Categorias)
-  @Column(DataType.INTEGER)
-  declare categoriaId: number;
-
   @Column(DataType.DECIMAL(10, 2))
   declare precio: number;
 
@@ -41,8 +38,8 @@ export class Platos extends Model<Platos> {
   @Column({ type: DataType.STRING, field: "imagen_url" })
   declare imagenUrl?: string;
 
-  @BelongsTo(() => Categorias)
-  declare categoria: Categorias;
+  @BelongsToMany(() => Categoria, () => PlatoCategoria)
+  categorias: Categoria[];
 
   @HasMany(() => PedidoPlato)
   declare pedidoPlatos: PedidoPlato[];
