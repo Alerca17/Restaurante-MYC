@@ -57,12 +57,21 @@ export const validarPlato = [
 ];
 
 export const validarReserva = [
-  body("clienteId").isInt().withMessage("ID de cliente inválido"),
-  body("mesaId").isInt().withMessage("ID de mesa inválido"),
+  // Validar clienteId (entero positivo)
+  body("clienteId").isInt({ min: 1 }).withMessage("ID de cliente inválido"),
+
+  // Validar mesaId (entero positivo)
+  body("mesaId").isInt({ min: 1 }).withMessage("ID de mesa inválido"),
+
+  // Validar fecha (formato ISO)
   body("fecha").isISO8601().withMessage("Fecha inválida"),
+
+  // Validar hora (formato HH:mm, 24 horas)
   body("hora")
     .matches(/^([0-1]\d|2[0-3]):([0-5]\d)$/)
-    .withMessage("Hora inválida"),
+    .withMessage("Hora inválida (debe ser HH:mm en formato 24 horas)"),
+
+  // Validar personas (entero positivo)
   body("personas")
     .isInt({ min: 1 })
     .withMessage("Debe haber al menos una persona"),

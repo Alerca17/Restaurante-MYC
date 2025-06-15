@@ -4,42 +4,61 @@ import { Usuarios } from "../models/Usuarios";
 import { Mesas } from "../models/Mesas";
 
 export class ReservasController {
-  static async create(req: Request, res: Response) {
+  static async create(req: Request, res: Response): Promise<void> {
     try {
       const { clienteId, mesaId, fecha, hora, personas } = req.body;
 
       // 1. Validar existencia de cliente
       const cliente = await Usuarios.findByPk(clienteId);
       if (!cliente) {
-        return res.status(400).json({ error: "El cliente no existe" });
+        res.status(400).json({ error: "El cliente no existe" });
+        return;
       }
 
       // 2. Validar existencia de mesa
       const mesa = await Mesas.findByPk(mesaId);
       if (!mesa) {
-        return res.status(400).json({ error: "La mesa no existe" });
+        res.status(400).json({ error: "La mesa no existe" });
+        return;
       }
 
-      // 3. Validar disponibilidad de la mesa (misma fecha y hora)
+      // 3. Validar capacidad de la mesa
+      if (personas > mesa.capacidad) {
+        res
+          .status(400)
+          .json({
+            error: `La mesa solo tiene capacidad para ${mesa.capacidad} personas.`,
+          });
+        return;
+      }
+
+      // 4. Formatear la hora a HH:mm:ss para comparar correctamente
+      let horaFormateada = hora;
+      if (hora.length === 5) {
+        horaFormateada = `${hora}:00`;
+      }
+
+      // 5. Validar disponibilidad de la mesa (misma fecha y hora)
       const reservaExistente = await Reservas.findOne({
         where: {
           mesaId,
           fecha,
-          hora,
+          hora: horaFormateada,
         },
       });
       if (reservaExistente) {
-        return res
+        res
           .status(400)
           .json({ error: "La mesa ya está reservada para esa fecha y hora" });
+        return;
       }
 
-      // 4. Crear la reserva si todo está bien
+      // 6. Crear la reserva si todo está bien
       const reserva = await Reservas.create({
         clienteId,
         mesaId,
         fecha,
-        hora,
+        hora: horaFormateada,
         personas,
       });
       res.status(201).json({ mensaje: "Reserva creada", data: reserva });
