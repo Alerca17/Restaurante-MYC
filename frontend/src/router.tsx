@@ -6,7 +6,7 @@ import AuthLayout from "./layouts/AuthLayout";
 import AppLayout from "./layouts/AppLayout";
 import MenuView from "./views/MenuView";
 import PerfilView from "./views/PerfilView";
-
+import PlatosView from "./views/PlatosView";
 export default function Router() {
   return (
     <BrowserRouter>
@@ -19,6 +19,7 @@ export default function Router() {
         <Route element={<AppLayout />}>
           <Route path="/menu" element={<MenuView />} />
           <Route path="/perfil" element={<PerfilView />} />
+          <Route path="/platos" element={<PlatosView />} />
           {/* Aquí puedes agregar más rutas privadas */}
         </Route>
       </Routes>

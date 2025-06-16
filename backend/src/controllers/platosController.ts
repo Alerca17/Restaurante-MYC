@@ -26,7 +26,17 @@ export class PlatosController {
           { model: Categoria, as: "categorias", attributes: ["id", "nombre"] },
         ],
       });
-      res.json(platos);
+
+      // Mapea para devolver solo los ids de categorías
+      const platosConCategorias = platos.map((plato: any) => {
+        const plain = plato.get({ plain: true });
+        return {
+          ...plain,
+          categorias: plain.categorias.map((cat: any) => cat.id),
+        };
+      });
+
+      res.json(platosConCategorias);
     } catch (error) {
       console.error("Error al obtener platos:", error);
       res.status(500).json({ error: "Error al obtener los platos" });
